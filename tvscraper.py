@@ -15,7 +15,6 @@ TARGET_URL = "http://www.imdb.com/search/title?num_votes=5000,&sort=user_rating,
 BACKUP_HTML = 'tvseries.html'
 OUTPUT_CSV = 'tvseries.csv'
 
-
 def extract_tvseries(dom):
     """
     Extract a list of highest rated TV series from DOM (of IMDB page).
@@ -26,35 +25,45 @@ def extract_tvseries(dom):
     - Actors/actresses (comma separated if more than one)
     - Runtime (only a number!)
     """
+    tvseries = []
 
-    content = dom.find("div", "lister-item-content")
-    print(content.h3.a.string.encode("utf-8"))
-    print(content.div.div['data-value'])
-    '''
-
+    # find al the tvserie objects
     content = dom.find_all("div", "lister-item-content")
 
+    # get the information from every tvserie
+    for serie in content:
 
-    file = open("test.txt", "w")
-    for i in content:
-        file.write(str(type(i)))
-        file.write(str(i.encode("utf-8"))+ "\n\n")
+        # get the tv title
+        tv_title = serie.h3.a.string.encode("utf-8")
+        tv_title = str(tv_title)[2:-1]
 
+        # get the rating
+        rating = serie.div.div['data-value']
 
+        # get the genre
+        genre = serie.find("p", "text-muted").find("span", "genre").string.encode("utf-8")
+        genre = str(genre)[4:-1].strip()
 
-    file.close()
-    '''
+        # get the actors
+        actors = serie.p.find_next_sibling("p").find_next_sibling("p").stripped_strings
+        actors_string = ""
 
+        # add all the actors together
+        for actor in actors:
+            actors_string += actor
 
+        # strip the sentece
+        actors_string = str(actors_string.encode("utf-8"))[8:-1]
 
+        # get the runtime
+        runtime = serie.find("p", "text-muted").find("span", "runtime").string.encode("utf-8")
+        runtime = str(runtime)[2:-4]
 
+        # save the information
+        temp = {"tv_title" : tv_title, "rating" : rating, "genre" : genre, "actors" : actors_string, "runtime" : runtime}
+        tvseries.append(temp)
 
-    # ADD YOUR CODE HERE TO EXTRACT THE ABOVE INFORMATION ABOUT THE
-    # HIGHEST RATED TV-SERIES
-    # NOTE: FOR THIS EXERCISE YOU ARE ALLOWED (BUT NOT REQUIRED) TO IGNORE
-    # UNICODE CHARACTERS AND SIMPLY LEAVE THEM OUT OF THE OUTPUT.
-
-    return []   # REPLACE THIS LINE AS WELL AS APPROPRIATE
+    return tvseries   # REPLACE THIS LINE AS WELL AS APPROPRIATE
 
 
 def save_csv(outfile, tvseries):
@@ -64,7 +73,10 @@ def save_csv(outfile, tvseries):
     writer = csv.writer(outfile)
     writer.writerow(['Title', 'Rating', 'Genre', 'Actors', 'Runtime'])
 
-    # ADD SOME CODE OF YOURSELF HERE TO WRITE THE TV-SERIES TO DISK
+    # write the information to the .csv file
+    for tvserie in tvseries:
+        writer.writerow([tvserie["tv_title"], tvserie["rating"], tvserie["genre"], tvserie["actors"], tvserie["runtime"]])
+
 
 
 def simple_get(url):
