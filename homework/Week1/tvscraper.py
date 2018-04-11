@@ -18,12 +18,8 @@ OUTPUT_CSV = 'tvseries.csv'
 def extract_tvseries(dom):
     """
     Extract a list of highest rated TV series from DOM (of IMDB page).
-    Each TV series entry should contain the following fields:
-    - TV Title
-    - Rating
-    - Genres (comma separated if more than one)
-    - Actors/actresses (comma separated if more than one)
-    - Runtime (only a number!)
+    Each TV series entry should contains: TV title, rating, genres,
+    actors/actresses, runtime.
     """
     tvseries = []
 
@@ -33,18 +29,18 @@ def extract_tvseries(dom):
     # get the information from every tvserie
     for serie in content:
 
-        # get the tv title
+        # get the tv title and strip the string
         tv_title = serie.h3.a.string.encode("utf-8")
         tv_title = str(tv_title)[2:-1]
 
-        # get the rating
-        rating = serie.div.div['data-value']
+        # get the rating strip the string
+        rating = serie.div.div["data-value"]
 
-        # get the genre
-        genre = serie.find("p", "text-muted").find("span", "genre").string.encode("utf-8")
+        # get the genre strip the string
+        genre = serie.find("span", "genre").string.encode("utf-8")
         genre = str(genre)[4:-1].strip()
 
-        # get the actors
+        # get the actors strip the string
         actors = serie.p.find_next_sibling("p").find_next_sibling("p").stripped_strings
         actors_string = ""
 
@@ -55,15 +51,22 @@ def extract_tvseries(dom):
         # strip the sentece
         actors_string = str(actors_string.encode("utf-8"))[8:-1]
 
-        # get the runtime
-        runtime = serie.find("p", "text-muted").find("span", "runtime").string.encode("utf-8")
+        # get the runtime strip the string
+        runtime = serie.find("span", "runtime").string.encode("utf-8")
         runtime = str(runtime)[2:-4]
 
         # save the information
-        temp = {"tv_title" : tv_title, "rating" : rating, "genre" : genre, "actors" : actors_string, "runtime" : runtime}
-        tvseries.append(temp)
+        information = {"tv_title" : tv_title, "rating" : rating, "genre" : genre,
+                       "actors" : actors_string, "runtime" : runtime}
 
-    return tvseries   # REPLACE THIS LINE AS WELL AS APPROPRIATE
+        # check if a value is missing
+        for key in information:
+            if not information[key]:
+                information[key] = "NA"
+
+        tvseries.append(information)
+
+    return tvseries
 
 
 def save_csv(outfile, tvseries):
@@ -71,12 +74,14 @@ def save_csv(outfile, tvseries):
     Output a CSV file containing highest rated TV-series.
     """
     writer = csv.writer(outfile)
+
+    # write the header to the .csv file
     writer.writerow(['Title', 'Rating', 'Genre', 'Actors', 'Runtime'])
 
     # write the information to the .csv file
     for tvserie in tvseries:
-        writer.writerow([tvserie["tv_title"], tvserie["rating"], tvserie["genre"], tvserie["actors"], tvserie["runtime"]])
-
+        writer.writerow([tvserie["tv_title"], tvserie["rating"], tvserie["genre"],
+                        tvserie["actors"], tvserie["runtime"]])
 
 
 def simple_get(url):
