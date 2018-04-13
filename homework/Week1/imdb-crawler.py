@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# Name:
-# Student number:
+# Name:Kenneth Goei
+# Student number: 11850701
 """
 This script crawls the IMDB top 250 movies.
 """
@@ -163,20 +163,17 @@ def scrape_top_250(soup):
         IMDB, note that these URLS must be absolute (i.e. include the http
         part, the domain part and the path part).
     """
+    # to save the urls
     movie_urls = []
 
-    movie_urls.append("http://www.imdb.com/title/tt0068646/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=e31d89dd-322d-4646-8962-327b42fe94b1&pf_rd_r=00PY708KVYHPCJJGHQWV&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_2")
-    movie_urls.append("http://www.imdb.com/title/tt0071562/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=e31d89dd-322d-4646-8962-327b42fe94b1&pf_rd_r=00PY708KVYHPCJJGHQWV&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_3")
-    movie_urls.append("http://www.imdb.com/title/tt0468569/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=e31d89dd-322d-4646-8962-327b42fe94b1&pf_rd_r=00PY708KVYHPCJJGHQWV&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_4")
-
-
-    '''
+    # take the part where all the movies are
     content = soup.find("tbody", "lister-list").find_all("tr")
 
+    # for every movie take the absolute url
     for title in content:
         url = "http://www.imdb.com" + title.find("td", "titleColumn").a["href"]
         movie_urls.append(url)
-    '''
+
     return movie_urls
 
 
@@ -210,71 +207,112 @@ def scrape_movie_page(dom):
     info.append(year)
 
     # find the duration and strip the string
-    duration_dom = header.div.time.get_text().encode("utf-8")
+    duration_dom = dom.find("time", itemprop="duration").get_text().encode("utf-8")
     duration = str(duration_dom)[28:-23]
     info.append(duration)
 
-    # find the genre and strip the string
+    # find all the genres and strip the string
     genre_dom = dom.find("div", itemprop="genre").a.get_text().encode("utf-8")
+    genre = find_genres(genre_dom, dom)
+    info.append(genre)
+
+    # find all the directors and strip the string
+    director_dom = dom.find("span", itemprop="director").get_text().encode("utf-8")
+    director = find_directors(director_dom, dom)
+    info.append(director)
+
+    # find all the writers and strip the string
+    writer_dom = dom.find("span", itemprop="creator").a.get_text().encode("utf-8")
+    writer = find_writers(writer_dom, dom)
+    info.append(writer)
+
+    # find all the actors and strip the string
+    actor_dom = dom.find("span", itemprop="actors").a.get_text().encode("utf-8")
+    actor = find_actors(actor_dom, dom)
+    info.append(actor)
+
+    # find the rating and strip the string
+    rating_dom = dom.find("span", itemprop="ratingValue").get_text().encode("utf-8")
+    rating = str(rating_dom)[2:-1]
+    info.append(rating)
+
+    # find the number of ratings and strip the string
+    number_ratings_dom = dom.find("span", itemprop="ratingCount").get_text().encode("utf-8")
+    number_ratings = str(number_ratings_dom)[2:-1]
+    info.append(number_ratings)
+
+    return info
+
+def find_genres(genre_dom, dom):
+    """
+    takes the first genre as input and looks if there are more find_genres.
+    """
+    # take the first genre and turn it into a string
     genre = str(genre_dom)[3:-1]
 
     # see if there are more genres to a movie
     next_genre = dom.find("div", itemprop="genre").a.find_next_sibling("a")
 
+    # add the new genres to the string
     while(next_genre):
         temp = next_genre.get_text().encode("utf-8")
         genre = genre + "; " + "" + str(temp)[3:-1]
         next_genre = next_genre.find_next_sibling("a")
+    return genre
 
-    info.append(genre)
-
-    director_dom = dom.find("span", itemprop="director").get_text().encode("utf-8")
+def find_directors(director_dom, dom):
+    """
+    takes the first director as input and looks if there are more find_genres.
+    """
+    # take the first director and turn it into a string
     director = str(director_dom)[4:-2]
 
-    # see if there are more genres to a movie
-    next_director = dom.find("span", itemprop="director").find_next_sibling("span", itemprop="director")
+    # see if there are more directors to a movie
+    next_director = dom.find("span", itemprop="director").find_next_sibling("span",
+                             itemprop="director")
 
+    # add all the directors to the string
     while(next_director):
         temp = next_director.get_text().encode("utf-8")
         director = director + "; " + str(temp)[4:-2]
         next_director = next_director.find_next_sibling("span", itemprop="director")
+    return director
 
-    info.append(director)
-
-    writer_dom = dom.find("span", itemprop="creator").a.get_text().encode("utf-8")
+def find_writers(writer_dom, dom):
+    """
+    takes the first writer as input and looks if there are more find_genres.
+    """
+    # take the first writer and turn it into a string
     writer = str(writer_dom)[2:-1]
 
-    next_writer = dom.find("span", itemprop="creator").find_next_sibling("span", itemprop="creator")
+    # see if there are more writers
+    next_writer = dom.find("span", itemprop="creator").find_next_sibling("span",
+                           itemprop="creator")
+
+    # add all the writers to the string
     while(next_writer):
         temp = next_writer.a.get_text().encode("utf-8")
         writer = writer + "; " + str(temp)[2:-1]
         next_writer = next_writer.find_next_sibling("span", itemprop="creator")
+    return writer
 
-    info.append(writer)
-
-    actor_dom = dom.find("span", itemprop="actors").a.get_text().encode("utf-8")
+def find_actors(actor_dom, dom):
+    """
+    takes the first actor as input and looks if there are more find_genres.
+    """
+    # take the first actor and turn it into a string
     actor = str(actor_dom)[2:-1]
 
-    next_actor = dom.find("span", itemprop="actors").find_next_sibling("span", itemprop="actors")
+    # see if there are more actors
+    next_actor = dom.find("span", itemprop="actors").find_next_sibling("span",
+                          itemprop="actors")
+
+    # add all the actors to the string
     while(next_actor):
         temp = next_actor.a.get_text().encode("utf-8")
         actor = actor + "; " + str(temp)[2:-1]
         next_actor = next_actor.find_next_sibling("span", itemprop="actors")
-    print(actor)
-    info.append(actor)
-
-    rating_dom = dom.find("span", itemprop="ratingValue").get_text().encode("utf-8")
-    rating = str(rating_dom)[2:-1]
-    info.append(rating)
-
-    number_ratings_dom = dom.find("span", itemprop="ratingCount").get_text().encode("utf-8")
-    number_ratings = str(number_ratings_dom)[2:-1]
-    info.append(number_ratings)
-    # YOUR SCRAPING CODE GOES HERE:
-    # Return everything of interest for this movie (all strings as specified
-    # in the docstring of this function).
-    return info
-
+    return actor
 
 if __name__ == '__main__':
     main()  # call into the progam
