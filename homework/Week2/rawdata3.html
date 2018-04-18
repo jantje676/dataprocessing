@@ -11,15 +11,12 @@
         <script>
 
 
-        
+
             let request = new XMLHttpRequest();
-            request.open("GET", "https://jantje676.github.io/dataprocessing/homework/Week2/rawdata.html");
+            request.open("GET", "https://jantje676.github.io/dataprocessing/homework/Week2/KNMI_20180417.csv");
             request.send();
 
-            if (request.status === "200")
-            {
-                console.log(request.responseText);
-            }
+            console.log(request.responseText);
 
 
 
