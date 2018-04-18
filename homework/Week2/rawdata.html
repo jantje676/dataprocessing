@@ -372,7 +372,10 @@
             20101230,  -16
             20101231,   25
         </textarea>
-        <canvas id="myCanvas" width="600" height="600"></canvas>
+        <p>
+            <canvas id="myCanvas" width="1000" height="700"></canvas>
+        </p>
+
         <script>
             // for storing data
             let date = [], temperature = [];
@@ -394,7 +397,6 @@
             }
 
             dateGraph = [];
-
             for(let i = 0, len = date.length ; i < len ; i++)
             {
                 dateGraph[i] = date[i].getTime();
@@ -408,16 +410,16 @@
             domainY[0] = Math.min(...temperature);
             domainY[1] = Math.max(...temperature);
 
-            let getX = createTransform(domainX,[0,600]);
-            let getY = createTransform(domainY,[0,600]);
+            let getX = createTransform(domainX,[100,1000]);
+            let getY = createTransform(domainY,[100,700]);
 
             var canvas = document.getElementById("myCanvas");
             var ctx = canvas.getContext("2d");
 
-            ctx.strokeRect(0,0,600,600);
+            ctx.strokeRect(100,100,900,600);
 
             ctx.beginPath();
-            ctx.moveTo(0,0);
+            ctx.moveTo(100,100);
             for(let i = 0, len = dateGraph.length ; i < len ; i++)
             {
                 ctx.lineTo(getX(dateGraph[i]), getY(temperature[i]));
