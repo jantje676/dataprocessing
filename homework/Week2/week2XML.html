@@ -20,22 +20,19 @@
                 let date = [], temperature = [];
 
 
-                // get the data from the html file and split in lines
+                // get the data from the csv. file and split in lines
                 let content = this.responseText;
-
-                let lines = content.split(",");
-                console.log(lines);
+                let lines = content.split(";");
 
                 // split the data in dates and temperatures
-                for(let i = 1, len = lines.length ; i < len - 1 ; i++)
+                for(let i = 3, len = lines.length ; i < len - 1 ; i += 2)
                 {
-                    let temp = lines[i].split(",");
-                    let year = temp[0].trim().slice(0,4);
-                    let month = temp[0].trim().slice(4,6);
-                    let day = temp[0].trim().slice(6,8);
-
+                    let temp = lines[i];
+                    let year = temp.slice(0,4);
+                    let month = temp.slice(4,6);
+                    let day = temp.slice(6,8);
                     date.push(new Date(year, month - 1, day));
-                    temperature.push(Number(temp[1]));
+                    temperature.push(Number(lines[i+1].slice(0,-3)));
                 }
 
                 // turn the dates to seconds

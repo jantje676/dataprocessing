@@ -4,6 +4,9 @@
         <title> Raw data </title>
     </head>
     <body>
+        <p>
+            <canvas id="myCanvas" width="1000" height="700"></canvas>
+        </p>
         <textarea id="rawdata">
             #date, maxtemp
             20100101,  -16
@@ -372,9 +375,6 @@
             20101230,  -16
             20101231,   25
         </textarea>
-        <p>
-            <canvas id="myCanvas" width="1000" height="700"></canvas>
-        </p>
 
         <script>
             // for storing data
@@ -413,43 +413,50 @@
             domainY[0] = Math.min(...temperature);
             domainY[1] = Math.max(...temperature);
 
-            // get a function to transform the values to coordinates
-            let getX = createTransform(domainX,[100,900]);
-            let getY = createTransform(domainY,[100,600]);
-
-            // start a canvas object
-            var canvas = document.getElementById("myCanvas");
-            var ctx = canvas.getContext("2d");
-
-            // Draw the x-axis
-            ctx.beginPath();
-            ctx.moveTo(100,600);
-            ctx.lineTo(900,600);
+            let padding = 100;
+            let width = 1000;
+            let height = 700;
+            let widthGraph = width - 2 * padding;
+            let heightGraph = height - 2 * padding;
 
             // x-axis labels
             let xLabels = ["Jan", "Feb", "March", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec", ""];
 
+            // get a function to transform the values to coordinates
+            let getX = createTransform(domainX,[padding, width - padding]);
+            let getY = createTransform(domainY,[padding, height - padding]);
+
+            // determine steps on y-axis
+            let yStep = (domainY[1] - domainY[0]) / 10;
+
+            // start a canvas object
+            var canvas = document.getElementById("myCanvas");
+            var ctx = canvas.getContext("2d");
+            ctx.textAlign = "center";
+
+            // Draw the x-axis
+            ctx.beginPath();
+            ctx.moveTo(padding, height - padding);
+            ctx.lineTo(width - padding , height - padding);
+
             // draw the x-axis labels
             for(let i = 0 ; i < 13 ; i++)
             {
-                ctx.moveTo(100 + (i * 800/12) , 600);
-                ctx.lineTo(100 + (i * 800/12), 610);
-                ctx.strokeText(xLabels[i],100 + (i * 800/12 + 800/24) , 610);
+                ctx.moveTo(padding + (i * widthGraph/12) , height - padding);
+                ctx.lineTo(padding + (i * widthGraph/12), height - padding + 10);
+                ctx.strokeText(xLabels[i], padding + (i * widthGraph/12 + widthGraph/24) , height - padding + 10);
             }
 
             // draw the y-axis
-            ctx.moveTo(100,100);
-            ctx.lineTo(100,600);
-
-            // determine steps on y-axis
-            let yStep = (domainY[1] - domainY[0]) / 11;
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - padding);
 
             // draw the y-axis labels
             for(let i = 0 ; i < 11 ; i++)
             {
-                ctx.moveTo(100, 100 + (i * 600/12));
-                ctx.lineTo(90, 100 + (i * 600/12) );
-                ctx.strokeText((domainY[1] - i * yStep).toFixed(0),70, 100 + (i * 600/12));
+                ctx.moveTo(padding, padding + (i * heightGraph / 10));
+                ctx.lineTo(padding - 10, padding + (i * heightGraph / 10));
+                ctx.strokeText((domainY[1] - i * yStep).toFixed(0), padding - 30 , padding + (i * heightGraph / 10));
             }
 
             // go to starting point of line graph
@@ -458,20 +465,22 @@
             // draw line graph
             for(let i = 0, len = dateGraph.length ; i < len ; i++)
             {
-                ctx.lineTo(getX(dateGraph[i]), getY(temperature[i]));
+                ctx.lineTo(getX(dateGraph[i]), height - getY(temperature[i]));
             }
             ctx.stroke();
 
             // add a title
-            ctx.strokeText("Average temperature in de Bilt (NL) in 2010", 500, 75);
+            ctx.font="30px Arial";
+            ctx.fillText("Average temperature in de Bilt (NL) in 2010", padding + widthGraph / 2 , padding - 25);
 
             // add x-as title
-            ctx.strokeText("Month", 500, 650);
+            ctx.font="15px Arial";
+            ctx.fillText("Month", padding + widthGraph / 2 , height - padding + 30);
 
             // add y-as title
             ctx.save();
             ctx.rotate(-Math.PI / 2);
-            ctx.strokeText("temperature", -350, 50);
+            ctx.fillText("Temperature (0.1°C)", -height / 2, padding - 60);
             ctx.restore();
 
 
