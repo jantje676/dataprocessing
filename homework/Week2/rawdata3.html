@@ -10,23 +10,47 @@
 
         <script>
 
-            function reqListener ()
+
+        
+            let request = new XMLHttpRequest();
+            request.open("GET", "https://jantje676.github.io/dataprocessing/homework/Week2/rawdata.html");
+            request.send();
+
+            if (request.status === "200")
             {
-                console.log(this.responseText);
+                console.log(request.responseText);
             }
 
-            var request = new XMLHttpRequest();
+
+
+            /*
+
+            let request = new XMLHttpRequest();
             request.addEventListener("load", reqListener);
-            request.open("GET", "http://www.example.org/example.txt");
+            request.open("GET", "https://jantje676.github.io/dataprocessing/homework/Week2/rawdata.html");
             request.send();
+
+            function reqListener ()
+            {
+                var hoi = this.responseText;
+                console.log(hoi)
+            }
+            */
+
+
+
+
+
 
 
             // for storing data
             let date = [], temperature = [];
 
+            /*
             // get the data from the html file and split in lines
             let content = document.getElementById('rawdata');
             let lines = content.value.split("\n");
+            */
 
             // split the data in dates and temperatures
             for(let i = 1, len = lines.length ; i < len - 1 ; i++)
