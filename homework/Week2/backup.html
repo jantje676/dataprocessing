@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Week 2 </title>
+    </head>
+    <body>
+        <p>
+            <canvas id="myCanvas" width="1000" height="700"></canvas>
+        </p>
+
+        <script>
+            let request = new XMLHttpRequest();
+            request.addEventListener("load", reqListener);
+            request.open("GET", "https://jantje676.github.io/dataprocessing/homework/Week2/data.csv");
+            request.send();
+
+            function reqListener ()
+            {
+                // for storing data
+                let date = [], temperature = [];
+
+
+                // get the data from the csv. file and split in lines
+                let content = this.responseText;
+                let lines = content.split(";");
+
+                // split the data in dates and temperatures
+                for(let i = 3, len = lines.length ; i < len - 1 ; i += 2)
+                {
+                    let temp = lines[i];
+                    let year = temp.slice(0,4);
+                    let month = temp.slice(4,6);
+                    let day = temp.slice(6,8);
+                    date.push(new Date(year, month - 1, day));
+                    temperature.push(Number(lines[i+1].slice(0,-3)));
+                }
+
+                // turn the dates to seconds
+                dateGraph = [];
+                for(let i = 0, len = date.length ; i < len ; i++)
+                {
+                    dateGraph[i] = date[i].getTime();
+                }
+
+                // get the min and max from the dates
+                domainX = [2];
+                domainX[0] = Math.min(...dateGraph);
+                domainX[1] = Math.max(...dateGraph);
+
+                // get the min and max from the temperatures
+                domainY = [2];
+                domainY[0] = Math.min(...temperature);
+                domainY[1] = Math.max(...temperature);
+
+                // get a function to transform the values to coordinates
+                let getX = createTransform(domainX,[100,900]);
+                let getY = createTransform(domainY,[100,600]);
+
+                // start a canvas object
+                var canvas = document.getElementById("myCanvas");
+                var ctx = canvas.getContext("2d");
+
+                // Draw the x-axis
+                ctx.beginPath();
+                ctx.moveTo(100,600);
+                ctx.lineTo(900,600);
+
+                // x-axis labels
+                let xLabels = ["Jan", "Feb", "March", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec", ""];
+
+                // draw the x-axis labels
+                for(let i = 0 ; i < 13 ; i++)
+                {
+                    ctx.moveTo(100 + (i * 800/12) , 600);
+                    ctx.lineTo(100 + (i * 800/12), 610);
+                    ctx.strokeText(xLabels[i],100 + (i * 800/12 + 800/24) , 610);
+                }
+
+                // draw the y-axis
+                ctx.moveTo(100,100);
+                ctx.lineTo(100,600);
+
+                // determine steps on y-axis
+                let yStep = (domainY[1] - domainY[0]) / 11;
+
+                // draw the y-axis labels
+                for(let i = 0 ; i < 11 ; i++)
+                {
+                    ctx.moveTo(100, 100 + (i * 600/12));
+                    ctx.lineTo(90, 100 + (i * 600/12) );
+                    ctx.strokeText((domainY[1] - i * yStep).toFixed(0),70, 100 + (i * 600/12));
+                }
+
+                // go to starting point of line graph
+                ctx.moveTo(getX(dateGraph[0]),getY(temperature[0]));
+
+                // draw line graph
+                for(let i = 0, len = dateGraph.length ; i < len ; i++)
+                {
+                    ctx.lineTo(getX(dateGraph[i]), getY(temperature[i]));
+                }
+                ctx.stroke();
+
+                // add a title
+                ctx.strokeText("Average temperature in de Bilt (NL) in 2010", 500, 75);
+
+                // add x-as title
+                ctx.strokeText("Month", 500, 650);
+
+                // add y-as title
+                ctx.save();
+                ctx.rotate(-Math.PI / 2);
+                ctx.strokeText("temperature (0,1 C)", -350, 50);
+                ctx.restore();
+
+
+                function createTransform(domain, range)
+                {
+                    var domain_min = domain[0];
+                    var domain_max = domain[1];
+                    var range_min = range[0];
+                    var range_max = range[1];
+
+                    // formulas to calculate the alpha and the beta
+                    var alpha = (range_max - range_min) / (domain_max - domain_min);
+                    var beta = range_max - alpha * domain_max;
+
+                    // returns the function for the linear transformation (y= a * x + b)
+                    return function(x)
+                    {
+                      return alpha * x + beta;
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+        </script>
+    </body>
+</html>

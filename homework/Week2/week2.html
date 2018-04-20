@@ -1,7 +1,12 @@
+/*
+ * Kenneth Goei
+ * 11850701
+ */
+
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Raw data </title>
+        <title> Week 2 </title>
     </head>
     <body>
         <p>
@@ -387,7 +392,8 @@
             let yLabel = "Temperature (0.1°C)";
             let stepsY = 11;
             let backgroundColor = "#e6e6e6";
-            let xLabels = ["Jan", "Feb", "March", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec", ""];
+            let xLabels = ["Jan", "Feb", "March", "Apr", "May", "Jun", "Jul",
+                           "Aug", "Sept", "Oct", "Nov", "Dec", ""];
 
             // calculate the width and height of the graph
             let widthGraph = width - 2 * padding;
@@ -468,9 +474,12 @@
                 // draw the x-axis labels
                 for(let i = 0 ; i < xStep + 1 ; i++)
                 {
-                    ctx.moveTo(padding + (i * widthGraph / xStep) , height - padding);
-                    ctx.lineTo(padding + (i * widthGraph / xStep), height - padding + 10);
-                    ctx.strokeText(xLabels[i], padding + (i * widthGraph / xStep + widthGraph / (xStep * 2)) , height - padding + 10);
+                    ctx.moveTo(padding + (i * widthGraph / xStep) ,
+                               height - padding);
+                    ctx.lineTo(padding + (i * widthGraph / xStep),
+                               height - padding + 10);
+                    ctx.strokeText(xLabels[i], padding + (i * widthGraph / xStep
+                                   + widthGraph / (xStep * 2)) , height - padding + 10);
                 }
 
                 // draw the y-axis
@@ -482,13 +491,15 @@
                 {
                     ctx.moveTo(padding, padding + (i * heightGraph / stepsY));
                     ctx.lineTo(padding - 10, padding + (i * heightGraph / stepsY));
-                    ctx.strokeText((domainY[1] - i * yStep).toFixed(0), padding - 30 , padding + (i * heightGraph / stepsY));
+                    ctx.strokeText((domainY[1] - i * yStep).toFixed(0),
+                                    padding - 30 , padding + (i * heightGraph / stepsY));
 
                     // draw the backgroundcolor bars
                     if(i % 2 == 1)
                     {
                         ctx.fillStyle = backgroundColor;
-                        ctx.fillRect(padding, padding + (i * heightGraph / stepsY), widthGraph, heightGraph / stepsY);
+                        ctx.fillRect(padding, padding + (i * heightGraph / stepsY),
+                                     widthGraph, heightGraph / stepsY);
                     }
                 }
             }
