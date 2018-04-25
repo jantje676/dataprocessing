@@ -27,8 +27,8 @@ d3.json("https://jantje676.github.io/dataprocessing/homework/week3/gasten.json",
     // split all the x- and y-values in two seperate arrays
     data.forEach(function(d)
     {
-        dataY.push(Number(d.Gasten))
-        dataX.push(d.Provincie)
+        dataY.push(Number(d.Gasten));
+        dataX.push(d.Provincie);
     });
 
     // create svg object
@@ -62,11 +62,11 @@ d3.json("https://jantje676.github.io/dataprocessing/homework/week3/gasten.json",
         .data(dataY)
         .enter()
         .append("rect")
-        .attr("x", function(d,i) { return i * (width / dataY.length)})
-        .attr("y", function(d,i) { return height - scaleY(d); })
-        .attr("width", width / dataY.length - barPadding)
-        .attr("height", function(d,i) { return scaleY(d);})
-        .style("fill", "pink")
+            .attr("x", function(d,i) { return i * (width / dataY.length)})
+            .attr("y", function(d,i) { return height - scaleY(d); })
+            .attr("width", width / dataY.length - barPadding)
+            .attr("height", function(d,i) { return scaleY(d);})
+            .style("fill", "pink")
         // change color when mouse is hovered over
         .on("mouseover", function()
         {
@@ -83,12 +83,13 @@ d3.json("https://jantje676.github.io/dataprocessing/homework/week3/gasten.json",
                 .style("fill", "pink");
         })
         // show y-value of barchart when mouse is on the bar
-        .on("mousemove", function(d, i){
-            var xPos = i * (width / dataY.length) + 5
-            var yPos = scaleAxisY(d) - 15
+        .on("mousemove", function(d, i)
+        {
+            var xPos = i * (width / dataY.length) + 5;
+            var yPos = scaleAxisY(d) - 15;
             tooltip.attr("transform", "translate(" + xPos + "," + yPos + ")");
             tooltip.select("text").text(d);
-        })
+        });
 
     // create tooltip object
     var tooltip = svg.append("g")
@@ -100,7 +101,6 @@ d3.json("https://jantje676.github.io/dataprocessing/homework/week3/gasten.json",
             .attr("x", 15)
             .attr("dy", "1.2em")
             .attr("font-size", "1em");
-
 
     // create a x-axis
     var xAxis = d3.svg.axis()
@@ -137,7 +137,7 @@ d3.json("https://jantje676.github.io/dataprocessing/homework/week3/gasten.json",
     // add x-axis label
     svg.append("text")
         .attr("transform","translate(" + (width/2) + " ," +
-                      (height + margin.top + 20) + ")")
+             (height + margin.top) + ")")
         .style("text-anchor", "middle")
         .text(xLabel);
 
