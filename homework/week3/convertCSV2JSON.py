@@ -16,3 +16,7 @@ next(reader, None)
 
 out = json.dumps( [ row for row in reader ] )
 jsonfile.write(out)
+
+# close files
+csvfile.close()
+jsonfile.close()

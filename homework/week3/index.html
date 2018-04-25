@@ -4,18 +4,7 @@
     <meta charset="utf-8">
     <title>D3 Test</title>
     <script type="text/javascript" src="https://jantje676.github.io/dataprocessing/homework/week3/d3/d3.v3.js"></script>
-    <style>
-
-        .axis path,
-        .axis line,
-        .axis
-        {
-            fill: none;
-            stroke: black;
-            shape-rendering: crispEdges;
-            font: 10px sans-serif;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="https://jantje676.github.io/dataprocessing/homework/week3/style.css">
   </head>
   <body>
         <script type="text/javascript">
@@ -32,7 +21,6 @@
             source = "CBS",
             titleGraph = "Aantal toeristen in 2016 per provincie";
 
-
         // put information about graph before the bar chart
         d3.select("head title")
             .text("Toeristen per provincie 2016");
@@ -43,7 +31,6 @@
             .append("p")
             .text("Staafdiagram welke het aantal toeristen per provincie in" +
                   " Nederland laat zien in 2016. De data is afkomstig van het CBS.");
-
 
         // load the json file and create the bar chart
         d3.json("https://jantje676.github.io/dataprocessing/homework/week3/gasten.json", function(data)
@@ -60,7 +47,8 @@
                             .attr("width", width + margin.left + margin.right)
                             .attr("height", height + margin.top + margin.bottom)
                         .append("g")
-                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                            .attr("transform", "translate(" + margin.left + ","
+                                  + margin.top + ")");
 
             // determine highest datapoint
             let maxData = Math.max(...dataY);
@@ -91,22 +79,24 @@
                 .attr("height", function(d,i) { return scaleY(d);})
                 .style("fill", "pink")
                 // change color when mouse is hovered over
-                .on("mouseover", function(){
-                    tooltip.style("display", null)
+                .on("mouseover", function()
+                {
+                    tooltip.style("display", null);
                     d3.select(this)
                         .style("fill", "teal");
 
                 })
                 // change color back when mouse is not on the bar
-                .on("mouseout", function(){
-                    tooltip.style("display", "none")
+                .on("mouseout", function()
+                {
+                    tooltip.style("display", "none");
                     d3.select(this)
                         .style("fill", "pink");
                 })
                 // show y-value of barchart when mouse is on the bar
                 .on("mousemove", function(d, i){
                     var xPos = i * (width / dataY.length) + 5
-                    var yPos = scaleAxisY(d) - 22
+                    var yPos = scaleAxisY(d) - 15
                     tooltip.attr("transform", "translate(" + xPos + "," + yPos + ")");
                     tooltip.select("text").text(d);
                 })
@@ -150,7 +140,7 @@
             svg.append("text")
                 .attr("x", (width / 2))
                 .attr("y", 0 - (margin.top / 2))
-                .attr("text-anchor", "middle")
+                .style("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("text-decoration", "underline")
                 .text(titleGraph);

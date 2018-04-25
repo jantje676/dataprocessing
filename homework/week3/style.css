@@ -1,0 +1,16 @@
+*
+{
+    font: 10px sans-serif;
+}
+
+.axis
+{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+p
+{
+    font-size:14px;
+}
