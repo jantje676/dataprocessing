@@ -3,8 +3,8 @@
  * 11850701
  */
 
-var govExpenditure = "http://stats.oecd.org/SDMX-JSON/data/SNA_TABLE11/AUT+BEL+FRA+DEU+NLD.GOVEXP+TLYCG.050.GS13.C/all?startTime=2011&endTime=2015&dimensionAtObservation=allDimensions",
-    pollution= "http://stats.oecd.org/SDMX-JSON/data/AIR_GHG/AUT+BEL+FRA+DEU+NLD.GHG.GHG_CAP/all?startTime=2011&endTime=2015&dimensionAtObservation=allDimensions",
+var govExpenditure = "https://stats.oecd.org/SDMX-JSON/data/SNA_TABLE11/AUT+BEL+FRA+DEU+NLD.GOVEXP+TLYCG.050.GS13.C/all?startTime=2011&endTime=2015&dimensionAtObservation=allDimensions",
+    pollution= "https://stats.oecd.org/SDMX-JSON/data/AIR_GHG/AUT+BEL+FRA+DEU+NLD.GHG.GHG_CAP/all?startTime=2011&endTime=2015&dimensionAtObservation=allDimensions",
     years = [],
     countries = [],
     dataset = [];
