@@ -24,7 +24,7 @@ window.onload = function() {
 function getData(error, response)
 {
     if(error) throw error;
-
+    console.log(response);
     // parse the string to a JSON object
     let dataExpenditure = JSON.parse(response[0].response);
     let dataPollution = JSON.parse(response[1].response);
