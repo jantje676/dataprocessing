@@ -4,7 +4,7 @@
  */
 
 // to save the data
-var energyIntensity = "http://stats.oecd.org/SDMX-JSON/data/GREEN_GROWTH/AUT+BEL+FRA+DEU+ESP+NLD.NRG_INT/all?startTime=2011&endTime=2015&dimensionAtObservation=allDimensions",
+var energyIntensity = "https://stats.oecd.org/SDMX-JSON/data/GREEN_GROWTH/AUT+BEL+FRA+DEU+ESP+NLD.NRG_INT/all?startTime=2011&endTime=2015&dimensionAtObservation=allDimensions",
     years = [],
     countries = [],
     dataset = [];
