@@ -1,0 +1,43 @@
+<!-- Kenneth Goei, 11850701-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Map</title>
+    <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
+    <script src="http://d3js.org/queue.v1.min.js"></script>
+    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+    <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-request.v1.min.js"></script>
+    <script src="datamaps.world.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://jantje676.github.io/dataprocessing/homework/week5/map.css">
+  </head>
+  <body>
+      <div class='radio'>
+          <label class='radio-inline'>
+          <input type="radio" name="year" value="2011" onclick='updateYear(this.value)'> 2011
+          </label>
+          <label class='radio-inline'>
+          <input type="radio" name="year" value="2012" onclick='updateYear(this.value)'> 2012
+          </label>
+          <label class='radio-inline'>
+          <input type="radio" name="year" value="2013" onclick='updateYear(this.value)' checked > 2013
+          </label>
+          <label class='radio-inline'>
+          <input type="radio" name="year" value="2014" onclick='updateYear(this.value)' checked > 2014
+          </label>
+          <label class='radio-inline'>
+          <input type="radio" name="year" value="2015" onclick='updateYear(this.value)' checked > 2015
+          </label>
+
+         <div id="container" style="position: relative; width: 500px; height: 300px;"></div>
+          <script src="https://jantje676.github.io/dataprocessing/homework/week5/map.js"></script>
+
+          <p>
+             Ik had het erg druk deze week, dit is wat ik tot nu toe heb.
+             Deze map wil ik linken aan mijn scatterplot van vorige week.
+          </p>
+  </body>
+</html>
