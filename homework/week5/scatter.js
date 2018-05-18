@@ -7,7 +7,7 @@ var govExpenditure = "https://stats.oecd.org/SDMX-JSON/data/SNA_TABLE11/AUT+BEL+
     pollution= "https://stats.oecd.org/SDMX-JSON/data/AIR_GHG/AUT+BEL+FRA+DEU+ESP+NLD.GHG.GHG_CAP/all?startTime=2011&endTime=2015&dimensionAtObservation=allDimensions",
     years = [],
     countries = [],
-    dataset = [];
+    datasetScatter = [];
 
 // wait till window has loaded
 window.onload = function() {
@@ -54,13 +54,13 @@ function getData(error, response)
     {
         for(let j = 0 ; j < years.length ; j++)
         {
-            dataset.push({ "pollution" : dataPollution[i + ":0:0:" + j][0],
+            datasetScatter.push({ "pollution" : dataPollution[i + ":0:0:" + j][0],
                         "expenditure" : dataExpenditure[i + ":0:0:0:0:" + j][0],
                         "countries" : countries[i],
                         "year" : years[(j % years.length)]});
         }
     }
-    makeGraph(dataset)
+    makeGraph(datasetScatter)
 };
 
 /*
@@ -73,15 +73,15 @@ function change(year)
     // all the years are chosen
     if(year == "all")
     {
-        newData = dataset;
+        newData = datasetScatter;
     }
 
     // select the data of the chosen year
-    for(let i = 0 ; i < dataset.length ; i++)
+    for(let i = 0 ; i < datasetScatter.length ; i++)
     {
-        if(dataset[i]["year"] == year)
+        if(datasetScatter[i]["year"] == year)
         {
-            newData.push(dataset[i]);
+            newData.push(datasetScatter[i]);
         }
     }
     // update graph

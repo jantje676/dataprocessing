@@ -1,0 +1,73 @@
+<!-- Kenneth Goei, 11850701-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Linked views</title>
+        <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+        <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
+        <script src="https://d3js.org/queue.v1.min.js"></script>
+        <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+        <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+        <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+        <script src="https://d3js.org/d3-request.v1.min.js"></script>
+        <script src="datamaps.world.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://jantje676.github.io/dataprocessing/homework/week5/linked.css">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <p id="title">
+            <center>
+                <h1>Linked views</h1><br>
+                Kenneth Goei, 11850701<br>
+                Week 5 <br>
+                Bron:
+                <a href="https://data.oecd.org/api/">OECD <br></a>
+            </center>
+        </p>
+        <p id="explanation">
+            In this website you will see two visualisations related to the use of energy and the emission of different countries in Europe and the expenditure of the government trying to reduce emission.<br>
+            From this visualisations it is clear that all different countries in Europe are putting a different effort in reducing emmission. <br>
+            Countries like Austria and Belgium have a higher emmision than Italy for example but they are spending less on reduction.<br>
+            This brings up the quetion if we should try to come up with a more European policy where countries put the same amount of effort in reducing pollution. <br>
+            Click on the scatterplot to get the chosen year data back instead of the data per country.<br>
+        </p>
+        <div class='radio'>
+            <label class='radio-inline'>
+            <input type="radio" name="year" value="2011" onclick='updateYear(this.value)'> 2011
+            </label>
+            <label class='radio-inline'>
+            <input type="radio" name="year" value="2012" onclick='updateYear(this.value)'> 2012
+            </label>
+            <label class='radio-inline'>
+            <input type="radio" name="year" value="2013" onclick='updateYear(this.value)' checked > 2013
+            </label>
+            <label class='radio-inline'>
+            <input type="radio" name="year" value="2014" onclick='updateYear(this.value)' checked > 2014
+            </label>
+            <label class='radio-inline'>
+            <input type="radio" name="year" value="2015" onclick='updateYear(this.value)' checked > 2015
+            </label>
+        </div>
+        <div>
+            <button type="button" value= "energy" class="btn btn-primary" onclick="changeScatter(this.value)">Set energy intensity against total emission</button>
+            <button type="button" value="expenditure" class="btn btn-primary" onclick="changeScatter(this.value)">Set back to all years</button>
+        </div>
+
+        <div id="mapTitle">
+            <h3> Energy intensity Europe (GDP per kg oil per capita)</h2>
+        </div>
+        <div id="map" style="position: relative; width: 400px; height: 300px;"></div>
+        <svg id="scatter" style="margin: auto"></svg>
+          <script src=" http://localhost:8888/linked.js"></script>
+
+
+  </body>
+</html>

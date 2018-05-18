@@ -1,0 +1,11 @@
+/*
+ * Kenneth Goei
+ * 11850701
+ */
+
+ .axis
+ {
+     fill: none;
+     stroke: black;
+     shape-rendering: crispEdges;
+ }
